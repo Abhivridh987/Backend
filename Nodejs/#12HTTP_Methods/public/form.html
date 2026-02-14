@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/form.css" type="text/css">
+</head>
+<body>
+    <form action="/login" method="POST">
+        <div>
+            <label for="NAME">Enter name</label>
+            <input type="text" id="NAME1" name="name">
+        </div>
+
+        <div>
+            <label for="AGE">Enter Age</label>
+            <input type="number" id="AGE1" name="age">
+        </div>
+
+        <div>
+            <label for="EDUCATION">Education</label>
+            <select id="EDUCATION1" name="education">
+                <option>Nil</option>
+                <optgroup label="UG">
+                    <option>SSLC</option>
+                    <option>Btech</option>
+                    <option>Bsc</option>
+                    <option>BPharm</option>
+                    <option>BBA</option>
+                    <option>Degree</option>
+                </optgroup>
+                <optgroup label="PG">
+                    <option>Mtech</option>
+                    <option>Msc</option>
+                    <option>Post Graduate</option>
+                    <option>MBA</option>
+                    <option>DPharm</option>
+                    <option>PharmD</option>
+                    <option>PhD</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div>
+            <input type="submit" id="SUBMIT1">
+        </div>
+    </form>
+    <form id="FORM2">
+        <div>
+            <label for="NAME">Enter name</label>
+            <input type="text" id="NAME2" name="name">
+        </div>
+
+        <div>
+            <label for="AGE">Enter Age</label>
+            <input type="number" id="AGE2" name="age">
+        </div>
+
+        <div>
+            <label for="EDUCATION">Education</label>
+            <select id="EDUCATION2" name="education">
+                <option>Nil</option>
+                <optgroup label="UG">
+                    <option>SSLC</option>
+                    <option>Btech</option>
+                    <option>Bsc</option>
+                    <option>BPharm</option>
+                    <option>BBA</option>
+                    <option>Degree</option>
+                </optgroup>
+                <optgroup label="PG">
+                    <option>Mtech</option>
+                    <option>Msc</option>
+                    <option>Post Graduate</option>
+                    <option>MBA</option>
+                    <option>DPharm</option>
+                    <option>PharmD</option>
+                    <option>PhD</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div>
+            <input type="submit" id="SUBMIT2">
+        </div>
+    </form>
+    <form id="FORM3">
+        <div>
+            <label for="NAME">Enter name</label>
+            <input type="text" id="NAME3" name="name">
+        </div>
+
+        <div>
+            <label for="AGE">Enter Age</label>
+            <input type="number" id="AGE3" name="age">
+        </div>
+
+        <div>
+            <label for="EDUCATION">Education</label>
+            <select id="EDUCATION3" name="education">
+                <option>Nil</option>
+                <optgroup label="UG">
+                    <option>SSLC</option>
+                    <option>Btech</option>
+                    <option>Bsc</option>
+                    <option>BPharm</option>
+                    <option>BBA</option>
+                    <option>Degree</option>
+                </optgroup>
+                <optgroup label="PG">
+                    <option>Mtech</option>
+                    <option>Msc</option>
+                    <option>Post Graduate</option>
+                    <option>MBA</option>
+                    <option>DPharm</option>
+                    <option>PharmD</option>
+                    <option>PhD</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div>
+            <input type="submit" id="SUBMIT3">
+        </div>
+    </form>
+    
+</body>
+<script>
+    document.querySelector('#FORM2').addEventListener('submit',async (e)=>{
+        e.preventDefault()
+        const form = document.querySelector('#FORM2')
+        const formdata = new FormData(form);
+        const data = Object.fromEntries(formdata.entries());
+
+        const response = await fetch('/login/put',{
+            method : 'PUT',
+            headers : {'Content-Type' : 'application/json'},
+            body : JSON.stringify(data)
+        });
+        console.log(response);
+        const result = await response.text();
+        console.log(result);
+        console.log('Submitted')
+        if(response.ok){
+            window.location.href = '/'
+        }
+    }) 
+
+
+    const form3 = document.querySelector('#FORM3')
+    form3.addEventListener('submit',(e)=>{
+        e.preventDefault()
+        const formdata = new FormData(form3)
+        const data = Object.fromEntries(formdata.entries());
+
+        fetch('/login/delete',{
+            method:'DELETE',
+            headers : {'Content-Type' : 'application/json'},
+            body : JSON.stringify(data)
+        })
+        .then((response)=>{
+            if(response.ok){
+                console.log(response)
+                window.location.href='/'
+            }
+            else{
+                console.log('error');
+            }
+        })
+        .then((result)=>{
+            console.log(result)
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    })
+</script>
+</html>
