@@ -6,18 +6,17 @@ const router = express.Router()
 
 //Paths
 
+cookieControllerPath = path.join(__dirname, '..', 'controllers', 'cookieControllers.js')
+
+//Controllers
+
+const {cookieRoot, setCookie, getCookie} = require(cookieControllerPath)
+
 //Routes
 
-router.get('/', (req,res)=>{
-    res.status(200).json({message: 'Cookie API Root'})
-})
-router.get('/setcookie',(req,res)=>{
-    res.cookie("username", "Abhivridh", {httpOnly:true})
-    res.status(200).json({message: 'Cookie has been set'})
-})
+router.get('/', cookieRoot)
+router.get('/setcookie', setCookie)
 
-router.get('/getcookie', (req,res)=>{
-    res.status(200).json({cookies:req.cookies})
-})
+router.get('/getcookie', getCookie)
 
 module.exports = router
