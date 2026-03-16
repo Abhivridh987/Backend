@@ -13,7 +13,7 @@ const app = express()
 
 const cookieRoutePath = path.join(__dirname, 'routes', 'cookieRoutes.js')
 const bcryptRoutePath = path.join(__dirname, 'routes', 'bcryptRoutes.js')
-
+const jwtRoutePath = path.join(__dirname, 'routes', 'jwtRoutes.js')
 //Middleware
 
 const logData = (req,res,next) => {
@@ -30,10 +30,12 @@ app.use(cookieParser())
 
 const cookieRoutes = require(cookieRoutePath)
 const bcryptRoutes = require(bcryptRoutePath)
+const jwtRoutes = require(jwtRoutePath)
 
 app.use('/', logData)
 app.use('/cookie', cookieRoutes)
 app.use('/bcrypt', bcryptRoutes)
+app.use('/jwt', jwtRoutes)
 
 
 app.get('/', (req,res)=>{

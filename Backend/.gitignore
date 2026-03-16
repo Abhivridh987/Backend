@@ -1,3 +1,6 @@
 Authentication/node_modules
 Authentication/package-lock.json
 Authentication/.env
+Auth-Mongo/node_modules
+Auth-Mongo/package-lock.json
+Auth-Mongo/.env
