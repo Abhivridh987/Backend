@@ -10,13 +10,18 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const app = express()
 
+const mongoose = require('mongoose')
+
 // Access environment variables
 
 require('dotenv').config()
 
 const PORT = process.env.PORT || 3000
+const MONGO_URI = process.env.MONGO_URI
 
 // Paths
+
+const authRouterPath = path.join(__dirname, 'routes', 'authRoutes.js');
 
 
 // Middleware
@@ -31,6 +36,11 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(logData)
 
+//Routers
+
+const authRouter = require(authRouterPath);
+
+
 // Routes
 
 app.get('/', (req,res)=>{
@@ -39,7 +49,17 @@ app.get('/', (req,res)=>{
     })
 })
 
+app.use('/auth', authRouter)
 
-app.listen(PORT, ()=>{
-    console.log(`Server is running on port ${PORT}`)
+
+
+mongoose.connect(MONGO_URI)
+.then(()=>{
+    console.log('Connected to MongoDB')
+    app.listen(PORT, ()=>{
+        console.log(`Server is running on port ${PORT}`)
+    })
+})
+.catch((err)=>{
+    console.error('Error connecting to MongoDB:', err)
 })
