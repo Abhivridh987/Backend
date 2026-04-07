@@ -18,11 +18,12 @@ require('dotenv').config()
 
 const PORT = process.env.PORT || 3000
 const MONGO_URI = process.env.MONGO_URI
+const JWT_SECRET = process.env.JWT_SECRET || '12345'
 
 // Paths
 
 const authRouterPath = path.join(__dirname, 'routes', 'authRoutes.js');
-
+const bagRouterPath = path.join(__dirname, 'routes', 'bagRoutes.js')
 
 // Middleware
 
@@ -30,6 +31,35 @@ const logData = (req,res, next)=>{
     console.log(`HTTPS Request: ${req.method} ${req.headers.host}${req.url}`);
     next();
 }
+
+const jwtAuthMiddleware = (req,res, next) =>{
+    if(req.cookies && req.cookies.token)
+    {
+        const token = req.cookies.token;
+        try{
+            const decoded = jwt.verify(token, JWT_SECRET);
+            req.user = decoded;
+            next();
+        }catch(err)
+        {
+            console.log('Invalid JWT Token');
+            res.status(401).json({
+                message: 'Invalid JWT Token',
+                status:401,
+                ok:false
+            })
+        }
+    }
+    else{
+        console.log('JWT Token is missing in the request');
+        res.status(401).json({
+            message: 'JWT Token is missing in the request',
+            status:401,
+            ok:false
+        })
+    }
+}
+
 
 app.use(cors())
 app.use(express.json())
@@ -39,7 +69,7 @@ app.use(logData)
 //Routers
 
 const authRouter = require(authRouterPath);
-
+const bagRouter = require(bagRouterPath)
 
 // Routes
 
@@ -51,6 +81,8 @@ app.get('/', (req,res)=>{
 
 app.use('/auth', authRouter)
 
+app.use('/home', jwtAuthMiddleware)
+app.use('/home/bags', bagRouter)
 
 
 mongoose.connect(MONGO_URI)
