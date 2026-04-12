@@ -135,6 +135,8 @@ const authLogout = async (req,res) =>{
     })
 }
 
+
+
 module.exports = {
     authRoot,
     authLogin,

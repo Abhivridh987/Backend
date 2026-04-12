@@ -82,7 +82,7 @@ app.get('/', (req,res)=>{
 app.use('/auth', authRouter)
 
 app.use('/home', jwtAuthMiddleware)
-app.use('/home/bags', bagRouter)
+app.use('/home', bagRouter)
 
 
 mongoose.connect(MONGO_URI)

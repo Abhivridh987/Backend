@@ -9,10 +9,16 @@ const BagControllerPath = path.join(__dirname, '..', 'controllers', 'bagControll
 
 // Controllers
 
-const {bagRoot, getAllBags} = require(BagControllerPath)
+const {bagRoot, getAllBags, getBagById, getBagByNameBrandModel, searchBags, filterBags} = require(BagControllerPath)
 
 
 router.get('/', bagRoot)
 router.get('/bags', getAllBags)
+router.get('/bags/search/filter/', filterBags)
+router.get('/bags/search/', searchBags)
+router.get('/bags/:id', getBagById)
+router.get('/bags/:name/:brand/:model_no', getBagByNameBrandModel)
+
+
 
 module.exports = router

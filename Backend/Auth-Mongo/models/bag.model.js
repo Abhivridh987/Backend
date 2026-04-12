@@ -7,6 +7,15 @@ const BagSchema = mongoose.Schema(
             required:[true, "Bag Name is Required"],
             trim:true,
         },
+        brand:{
+            type:String,
+            required:[true, "Bag Brand is Required"],
+            trim:true,
+        },
+        model_no:{
+            type:Number,
+            required:[true, "Bag Model Number is Required"],
+        },
         description:{
             type:String,
             required:[true, "Bag Description is Required"],
@@ -15,11 +24,6 @@ const BagSchema = mongoose.Schema(
         category:{
             type:String,
             required:[true, "Bag Category is Required"],
-            trim:true,
-        },
-        brand:{
-            type:String,
-            required:[true, "Bag Brand is Required"],
             trim:true,
         },
         price:{
@@ -44,6 +48,10 @@ const BagSchema = mongoose.Schema(
             type:Number,
             required:[true, "Bag Quantity is Required"],
             min:0
+        },
+        bestSeller:{
+            type:Boolean,
+            default:false
         }
         
     },

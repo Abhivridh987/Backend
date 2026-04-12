@@ -80,7 +80,7 @@ const getBagById = async (req,res) =>{
 
 const getBagByNameBrandModel = async (req,res)=>{
     const decodedToken = jwt.verify(req.cookies.token, JWT_SECRET);
-    const {name, brand, model_no} = req.query;
+    const {name, brand, model_no} = req.params;
     try{
         const foundBag = await Bag.findOne({name:name, brand:brand, model_no:model_no})
         if(!foundBag)
@@ -113,14 +113,19 @@ const searchBags = async (req,res) =>{
     const decodedToken = jwt.verify(req.cookies.token, JWT_SECRET);
     const {query} = req.query;
     try{
-        const foundBags = await Bag.find({
-            $or:[
+        let searchCriteria = {};
+        if(query && query.trim() !== ''){
+            searchCriteria = {$or:[
                 {name:{$regex:query, $options:'i'}},
                 {brand:{$regex:query, $options:'i'}},
                 {category:{$regex:query, $options:'i'}}
-            ]
+            ]}
+        }
+        const foundBags = await Bag.find({
+            ...searchCriteria
         });
-        if(!foundBag)
+        
+        if(!foundBags)
         {
             res.status(404).json({
                 message:"Bag not found with the provided name, brand and model number",
@@ -148,25 +153,44 @@ const searchBags = async (req,res) =>{
     }
 }
 
+
+
 const filterBags = async (req,res) =>{
     const decodedToken = jwt.verify(req.cookies.token, JWT_SECRET);
-    const {categories, price_min, price_max, rating_min, bestSeller} = req.query;
-    let filterCriteria = {
-        price:{$gte:price_min || 0, $lte:price_max || Number.MAX_VALUE},
-        rating:{$gte:rating_min || 0},
-        bestSeller: bestSeller === 'true' ? true : false
-    }
-    if(categories)
-    {
-        const categoryArray = categories.split(',').map(cat=> cat.trim());
-        filterCriteria.category = {$in:categoryArray};
-    }
+    const {query, categories, price_min, price_max, rating_min, bestSeller, discount} = req.query;
     try{
-        const foundBags = await Bag.find(filterCriteria);
+        let filterCriteria = {
+            price:{$gte:Number(price_min) || 0, $lte:Number(price_max) || Number.MAX_VALUE},
+            rating:{$gte:Number(rating_min) || 0},
+            discount:{$gte:Number(discount) || 0}
+        }
+        let searchCriteria = {}
+        if(bestSeller !== undefined)
+        {
+            filterCriteria.bestSeller = bestSeller === 'true' ? true : false;
+        }
+        if(categories !== undefined){
+            const categoryArray = categories.split(',').map(cat=> cat.trim());
+            filterCriteria.category = {$in:categoryArray};
+        }
+        if(query && query.trim() !== ''){
+            searchCriteria = {
+                $or:[
+                    {name:{$regex:query, $options:'i'}},
+                    {brand:{$regex:query, $options:'i'}},
+                    {category:{$regex:query, $options:'i'}}
+                ]
+            }
+        }
+        const foundBags = await Bag.find({
+            ...filterCriteria,
+            ...searchCriteria
+            
+        })
         if(!foundBags || foundBags.length === 0)
         {
             res.status(404).json({
-                message:"Bag not found with the provided name, brand and model number",
+                message:"Bags not found with specfications",
                 status:404,
                 ok:false
             })
@@ -180,14 +204,15 @@ const filterBags = async (req,res) =>{
             ok:true
         });
         return;
-    }catch(err){
+    }catch(err)
+    {
         res.status(500).json({
-            message:"Error retrieving bags",
-            error:err.message,
+            message:'Error retrieving bags',
             status:500,
-            ok:false
-        }); 
-        return;
+            ok:false,
+            error:err.message,
+            detailed_error:err
+        })
     }
 }
 
