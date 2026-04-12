@@ -16,13 +16,15 @@ router.use(express.urlencoded({extended:true}))
 router.use(cookieParser())
 
 //Controllers
-const {authRoot, authLogin, authSignup} = require(AuthControllerPath)
+const {authRoot, authLogin, authSignup, authLogout} = require(AuthControllerPath)
 
 // Routes
 
 router.get('/', authRoot);
 router.post('/login', authLogin);
 router.post('/signup', authSignup);
+router.get('/logout', authLogout);
+
 
 
 module.exports = router

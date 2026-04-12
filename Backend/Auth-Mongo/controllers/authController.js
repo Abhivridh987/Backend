@@ -126,8 +126,18 @@ const authSignup = async (req,res)=>{
     }
 }
 
+const authLogout = async (req,res) =>{
+    res.clearCookie('token');
+    res.status(200).json({
+        message:"Logout Successfully",
+        status:200,
+        ok:true
+    })
+}
+
 module.exports = {
     authRoot,
     authLogin,
-    authSignup
+    authSignup,
+    authLogout
 }
