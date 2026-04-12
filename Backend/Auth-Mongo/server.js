@@ -24,6 +24,7 @@ const JWT_SECRET = process.env.JWT_SECRET || '12345'
 
 const authRouterPath = path.join(__dirname, 'routes', 'authRoutes.js');
 const bagRouterPath = path.join(__dirname, 'routes', 'bagRoutes.js')
+const adminRouterPath = path.join(__dirname, 'routes', 'adminRoutes.js')
 
 // Middleware
 
@@ -60,6 +61,30 @@ const jwtAuthMiddleware = (req,res, next) =>{
     }
 }
 
+const adminAuthMiddleware = (req,res,next)=>{
+
+    if(req.cookies && req.cookies.token)
+    {
+        const decoded = jwt.verify(req.cookies.token, JWT_SECRET);
+        if(decoded && decoded.admin)
+            next();
+        else{
+            res.status(403).json({
+                message:'Admin access required',
+                status:403,
+                ok:false,
+                decodedToken:decoded
+            })
+        }
+    }
+    else{
+        res.status(401).json({
+            message:'JWT Token is missing in the request',
+            status:401,
+            ok:false
+        })
+    }
+}
 
 app.use(cors())
 app.use(express.json())
@@ -70,7 +95,7 @@ app.use(logData)
 
 const authRouter = require(authRouterPath);
 const bagRouter = require(bagRouterPath)
-
+const adminRouter = require(adminRouterPath)
 // Routes
 
 app.get('/', (req,res)=>{
@@ -84,6 +109,9 @@ app.use('/auth', authRouter)
 app.use('/home', jwtAuthMiddleware)
 app.use('/home', bagRouter)
 
+app.use('/admin', jwtAuthMiddleware)
+app.use('/admin', adminAuthMiddleware)
+app.use('/admin', adminRouter)
 
 mongoose.connect(MONGO_URI)
 .then(()=>{

@@ -32,16 +32,19 @@ const BagSchema = mongoose.Schema(
         },
         discount:{
             type:Number,
-            required:[true, "Bag Discount is Required"]
+            default:0,
+            min:0,
+            max:100
         },
         rating:{
             type:Number,
-            required:[true, "Bag Rating is Required"],
+            default:0,
             min:0,
             max:5
         },
         image_url:{
             type:String,
+            default:"",
             trim:true,
         },
         quantity:{

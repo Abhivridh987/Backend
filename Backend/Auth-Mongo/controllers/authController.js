@@ -63,7 +63,7 @@ const authLogin = async (req,res)=>{
         return;
     }
     else{
-        const token = jwt.sign({email: user.email, username: user.username, id: user._id}, JWT_SECRET);
+        const token = jwt.sign({email: user.email, username: user.username, id: user._id, admin:user.admin}, JWT_SECRET);
         res.cookie("token", token, {httpOnly:true});
         res.status(200).json({
             message: 'Login successful',
