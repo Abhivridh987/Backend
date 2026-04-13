@@ -72,10 +72,26 @@ Vantique is an online bag commerce backend project built with Node.js and Expres
 ```
 Vantique/
 ├── controllers/          # Business logic for auth, bags, and admin
+    ├── bagController.js
+    ├── authController.js
+    └── adminController.js
 ├── models/               # Mongoose schemas for User and Bag
+    ├── bag.model.js
+    └── user.model.js
 ├── routes/               # API route definitions
+    ├── bagRoutes.js
+    ├── authRoutes.js
+    └── adminRoutes.js
 ├── public/               # Static assets (e.g., images)
 ├── swagger/              # Swagger API Documentation
+    ├── paths
+       ├── bagPaths.js
+       ├── authPaths.js
+       └── adminPaths.js
+    ├── schemas
+       ├── bagSchema.js
+       └── userSchema.js
+    └── swagger.js
 ├── server.js             # Main server file
 ├── package.json          # Dependencies and scripts
 └── readme.md             # This file
