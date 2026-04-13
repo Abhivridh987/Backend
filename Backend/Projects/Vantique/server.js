@@ -9,6 +9,8 @@ const cookieParser = require('cookie-parser')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const app = express()
+const swaggerUi = require('swagger-ui-express')
+const swaggerSpec = require('./swagger/swagger')
 
 const mongoose = require('mongoose')
 
@@ -112,6 +114,9 @@ app.use('/home', bagRouter)
 app.use('/admin', jwtAuthMiddleware)
 app.use('/admin', adminAuthMiddleware)
 app.use('/admin', adminRouter)
+
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 mongoose.connect(MONGO_URI)
 .then(()=>{
