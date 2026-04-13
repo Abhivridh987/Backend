@@ -21,7 +21,19 @@ const UserSchema = mongoose.Schema(
         admin:{
             type:Boolean,
             default:false
-        }
+        },
+        cart:[
+            {
+                bagId:{
+                    type:mongoose.Schema.Types.ObjectId,
+                    ref:'Bag'
+                },
+                quantity:{
+                    type:Number,
+                    default:1
+                }
+            }
+        ]
     },
     {
         timestamps:true

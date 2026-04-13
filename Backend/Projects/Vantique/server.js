@@ -27,7 +27,7 @@ const JWT_SECRET = process.env.JWT_SECRET || '12345'
 const authRouterPath = path.join(__dirname, 'routes', 'authRoutes.js');
 const bagRouterPath = path.join(__dirname, 'routes', 'bagRoutes.js')
 const adminRouterPath = path.join(__dirname, 'routes', 'adminRoutes.js')
-
+const orderRouterPath = path.join(__dirname, 'routes', 'orderRoutes.js')
 // Middleware
 
 const logData = (req,res, next)=>{
@@ -98,6 +98,7 @@ app.use(logData)
 const authRouter = require(authRouterPath);
 const bagRouter = require(bagRouterPath)
 const adminRouter = require(adminRouterPath)
+const orderRouter = require(orderRouterPath)
 // Routes
 
 app.get('/', (req,res)=>{
@@ -115,6 +116,8 @@ app.use('/admin', jwtAuthMiddleware)
 app.use('/admin', adminAuthMiddleware)
 app.use('/admin', adminRouter)
 
+app.use('/orders', jwtAuthMiddleware)
+app.use('/orders', orderRouter)
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 

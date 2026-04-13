@@ -9,7 +9,7 @@ const BagControllerPath = path.join(__dirname, '..', 'controllers', 'bagControll
 
 // Controllers
 
-const {bagRoot, getAllBags, getBagById, getBagByNameBrandModel, searchBags, filterBags} = require(BagControllerPath)
+const {bagRoot, getAllBags, getBagById,  searchBags, filterBags, addBagToCart, deleteBagFromCart} = require(BagControllerPath)
 
 
 router.get('/', bagRoot)
@@ -17,7 +17,8 @@ router.get('/bags', getAllBags)
 router.get('/bags/search/filter/', filterBags)
 router.get('/bags/search/', searchBags)
 router.get('/bags/:id', getBagById)
-router.get('/bags/:name/:brand/:model_no', getBagByNameBrandModel)
+router.put('/bags/:id/cart/add', addBagToCart)
+router.put('/bags/:id/cart/delete', deleteBagFromCart)
 
 
 

@@ -64,7 +64,7 @@ const authLogin = async (req,res)=>{
             return;
         }
         else{
-            const token = jwt.sign({email: user.email, username: user.username, id: user._id, admin:user.admin}, JWT_SECRET);
+            const token = jwt.sign({email: user.email, username: user.username, _id: user._id, admin:user.admin, cart:user.cart}, JWT_SECRET);
             res.cookie("token", token, {httpOnly:true});
             res.status(200).json({
                 message: 'Login successful',
@@ -112,7 +112,9 @@ const authSignup = async (req,res)=>{
         const newUser = new User({
             username:username,
             email:email,
-            password:hashedPassword
+            password:hashedPassword,
+            admin:false,
+            cart:[]
         })
         try{
             const savedUser = await newUser.save()
