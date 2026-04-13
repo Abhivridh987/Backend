@@ -11,11 +11,14 @@ Vantique is an online bag commerce backend project built with Node.js and Expres
 - Session management with express-session
 - CORS enabled for frontend integration
 - MongoDB integration with Mongoose ODM
+- Swagger API Documentation included
+
 
 ## Tech Stack
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB (with Mongoose)
 - **Authentication**: JSON Web Tokens (JWT), bcrypt for password hashing
+- **Swagger API Documentation**: Interactive UI for API Documentation
 - **Other Libraries**: body-parser, cookie-parser, cors, dotenv, express-session, lodash
 
 ## Installation
@@ -72,6 +75,7 @@ Vantique/
 ├── models/               # Mongoose schemas for User and Bag
 ├── routes/               # API route definitions
 ├── public/               # Static assets (e.g., images)
+├── swagger/              # Swagger API Documentation
 ├── server.js             # Main server file
 ├── package.json          # Dependencies and scripts
 └── readme.md             # This file
