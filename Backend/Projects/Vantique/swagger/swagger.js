@@ -8,7 +8,7 @@ const userSchema = require('./schemas/userSchema.js')
 const swaggerSpec = {
   openapi: "3.0.0",
   info: {
-    title: "Bag API",
+    title: "Vantique API",
     version: "1.0.0",
     description: "E-commerce Bag API Documentation",
   },
@@ -26,8 +26,8 @@ const swaggerSpec = {
 
   components: {
     schemas: {
-      Bag: bagSchema,
-      User:userSchema
+      ...bagSchema,
+      ...userSchema
     },
   },
 };
