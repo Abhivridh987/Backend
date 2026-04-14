@@ -1,23 +1,30 @@
 module.exports = {
-    "/auth/root":{
-        "get":{
-            "tags":[
-                "Authentication"
-            ],
-            "summary":"Root endpoint for authentication",
-            "responses":{
-                "200":{
-                    "description":"Authentication API Root is Working",
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "message":{
-                                        "type":"string"
+    "/auth/root": {
+        "get": {
+            "tags": ["Authentication"],
+            "summary": "Root endpoint for authentication",
+            "description": "Test endpoint to verify authentication API is working",
+            "responses": {
+                "200": {
+                    "description": "Authentication API Root is Working",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Auth API Root"
+                                    },
+                                    "status": {
+                                        "type": "number",
+                                        "example": 200
+                                    },
+                                    "ok": {
+                                        "type": "boolean",
+                                        "example": true
                                     }
                                 }
-
                             }
                         }
                     }
@@ -28,11 +35,11 @@ module.exports = {
 
     "/auth/login": {
         "post": {
-            "tags": [
-                "Authentication"
-            ],
+            "tags": ["Authentication"],
             "summary": "Login a user",
+            "description": "Authenticate user with email and password credentials",
             "requestBody": {
+                "required": true,
                 "content": {
                     "application/json": {
                         "schema": {
@@ -41,11 +48,13 @@ module.exports = {
                                 "email": {
                                     "type": "string",
                                     "format": "email",
-                                    "example":"mary@example.com"
+                                    "example": "mary@example.com",
+                                    "description": "User email address"
                                 },
                                 "password": {
                                     "type": "string",
-                                    "example":"mary123"
+                                    "example": "mary123",
+                                    "description": "User password"
                                 }
                             },
                             "required": ["email", "password"]
@@ -53,134 +62,103 @@ module.exports = {
                     }
                 }
             },
-            "responses":{
-                "200":{
-                    "description":"User Logged in Successfully",
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "token":{
-                                        "type":"string",
-                                        "example":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0ODg3ODQyYjE4ZDU2M2E4ODg5YjkiLCJpYXQiOjE2ODg3ODQyMDAsImV4cCI6MTY4ODg2MDYyMH0.7n8sKq8mLh9v1z5lXo9k8s9s8s9s8s9s8s9s8s9s8"
+            "responses": {
+                "200": {
+                    "description": "User Logged in Successfully",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Login successful"
                                     },
-                                    "status":{
-                                        "type":"number",
-                                        "example":200
+                                    "status": {
+                                        "type": "number",
+                                        "example": 200
                                     },
-                                    "ok":{
-                                        "type":"boolean",
-                                        "example":true
+                                    "ok": {
+                                        "type": "boolean",
+                                        "example": true
                                     },
-                                    "message":{
-                                        "type":"string",
-                                        "example":"Login successful"
+                                    "token": {
+                                        "type": "string",
+                                        "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
                                     },
-                                    "token_decoded":{
-                                        "type":"object",
-                                        "properties":{
-                                            
+                                    "token_decoded": {
+                                        "type": "object",
+                                        "properties": {
+                                            "email": {"type": "string"},
+                                            "username": {"type": "string"},
+                                            "_id": {"type": "string"},
+                                            "admin": {"type": "boolean"},
+                                            "cart": {"type": "array"}
                                         }
                                     }
-
                                 }
                             }
                         }
                     }
                 },
-                "400":{
-                    "description":"Email and Password are required for login",
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "message":{
-                                        "type":"string",
-                                        "example":"Email and Password are required for login"
+                "400": {
+                    "description": "Email and Password are required for login",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Email and Password are required for login"
                                     },
-                                    "status":{
-                                        "type":"number",
-                                        "example":400
-                                    },
-                                    "ok":{
-                                        "type":"boolean",
-                                        "example":true
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                },
-                "401":{
-                    "description":"Invalid credentials",
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "message":{
-                                        "type":"string",
-                                        "example":"Invalid credentials"
-                                    },
-                                    "status":{
-                                        "type":"number",
-                                        "example":401
-                                    },
-                                    "ok":{
-                                        "type":"boolean",
-                                        "example":true
-                                    }
+                                    "status": {"type": "number", "example": 400},
+                                    "ok": {"type": "boolean", "example": false}
                                 }
                             }
                         }
                     }
                 },
-                "404":{
-                    "description":"User not found in database",
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "message":{
-                                        "type":"string",
-                                        "example":"User not found in database"
-                                    },
-                                    "status":{
-                                        "type":"number",
-                                        "example":404
-                                    },
-                                    "ok":{
-                                        "type":"boolean",
-                                        "example":false
-                                    }
+                "401": {
+                    "description": "Invalid credentials",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {"type": "string", "example": "Invalid credentials"},
+                                    "status": {"type": "number", "example": 401},
+                                    "ok": {"type": "boolean", "example": false}
                                 }
                             }
                         }
                     }
                 },
-                "500":{
-                    "description":"Error occurred during login",
-                    "content":{
-                        "application/json":{
-                            "schema":{
-                                "type":"object",
-                                "properties":{
-                                    "message":{
-                                        "type":"string",
-                                        "example":"Error occurred during login"
-                                    },
-                                    "status":{
-                                        "type":"number",
-                                        "example":500
-                                    },
-                                    "ok":{
-                                        "type":"boolean",
-                                        "example":false
-                                    }
+                "404": {
+                    "description": "User not found in database",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {"type": "string", "example": "User not found in database"},
+                                    "status": {"type": "number", "example": 404},
+                                    "ok": {"type": "boolean", "example": false}
+                                }
+                            }
+                        }
+                    }
+                },
+                "500": {
+                    "description": "Error occurred during login",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {"type": "string", "example": "Error occurred during login"},
+                                    "status": {"type": "number", "example": 500},
+                                    "ok": {"type": "boolean", "example": false}
                                 }
                             }
                         }
@@ -191,11 +169,11 @@ module.exports = {
     },
     "/auth/signup": {
         "post": {
-            "tags": [
-                "Authentication"
-            ],
+            "tags": ["Authentication"],
             "summary": "Register a new user",
+            "description": "Create a new user account with username, email and password",
             "requestBody": {
+                "required": true,
                 "content": {
                     "application/json": {
                         "schema": {
@@ -203,16 +181,19 @@ module.exports = {
                             "properties": {
                                 "username": {
                                     "type": "string",
-                                    "example": "maryuser"
+                                    "example": "maryuser",
+                                    "description": "Username for the account"
                                 },
                                 "email": {
                                     "type": "string",
                                     "format": "email",
-                                    "example": "mary@example.com"
+                                    "example": "mary@example.com",
+                                    "description": "Email address for the account"
                                 },
                                 "password": {
                                     "type": "string",
-                                    "example": "mary123"
+                                    "example": "mary123",
+                                    "description": "Password for the account (will be hashed with bcrypt)"
                                 }
                             },
                             "required": ["username", "email", "password"]
@@ -340,10 +321,10 @@ module.exports = {
 
     "/auth/logout": {
         "get": {
-            "tags": [
-                "Authentication"
-            ],
+            "tags": ["Authentication"],
             "summary": "Logout a user",
+            "description": "Clear the authentication cookie to logout the user",
+            "security": [{"cookieAuth": []}],
             "responses": {
                 "200": {
                     "description": "Logout Successfully",

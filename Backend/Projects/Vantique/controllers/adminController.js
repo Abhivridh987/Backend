@@ -8,6 +8,7 @@ const JWT_SECRET = process.env.JWT_SECRET || '12345'
 
 const User = require('../models/user.model');
 const Bag = require('../models/bag.model');
+const Order = require('../models/order.model')
 
 
 console.log("User:", User);
@@ -385,8 +386,80 @@ const deleteBagById = async (req,res) =>{
     }
 }
 
+//Order Management
+
+const getAllOrders = async (req, res) =>{
+    const decoded = jwt.verify(req.cookies.token, JWT_SECRET)
+    try{
+        const orders = await Order.find();
+        return res.status(200).json({
+            status:200,
+            ok:true,
+            message:"Retrieved all orders",
+            data:orders,
+            token:decoded
+        })
+    }catch(err)
+    {
+        return res.status(500).json({
+            status:500,
+            ok:false,
+            message:"Error occured",
+            error:err.message,
+            detailed_err:err
+        })
+    }
+}
+
+const getUserOrders = async (req, res) =>{
+    const decoded = jwt.verify(req.cookies.token, JWT_SECRET)
+    try{
+        const orders = await Order.find({userId:req.params.id});
+        return res.status(200).json({
+            status:200,
+            ok:true,
+            message:"Retrieved all orders",
+            data:orders,
+            token:decoded
+        })
+    }catch(err)
+    {
+        return res.status(500).json({
+            status:500,
+            ok:false,
+            message:"Error occured",
+            error:err.message,
+            detailed_err:err
+        })
+    }
+}
+
+const changeOrderStatus = async (req,res)=>{
+    const decoded = jwt.verify(req.cookies.token, JWT_SECRET)
+    try{
+        const order = await Order.findByIdAndUpdate(req.params.id, {status:req.body.status}, {new:true});
+        return res.status(200).json({
+            status:200,
+            ok:true,
+            message:"Retrieved all orders",
+            data:order,
+            token:decoded
+        })
+    }catch(err)
+    {
+        return res.status(500).json({
+            status:500,
+            ok:false,
+            message:"Error occured",
+            error:err.message,
+            detailed_err:err
+        })
+    }
+}
+
 module.exports = {
     adminRoot,
     getAllUsers, getUserById, deleteUserById, changeUserRoleById,
-    getAllBags, getBagById, createBag, updateBagById, deleteBagById
+    getAllBags, getBagById, createBag, updateBagById, deleteBagById,
+    getAllOrders, getUserOrders, changeOrderStatus
 }

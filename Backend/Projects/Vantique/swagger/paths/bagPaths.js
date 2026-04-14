@@ -1,4 +1,65 @@
 module.exports = {
+    "/": {
+        "get": {
+            "tags": [
+                "Bags"
+            ],
+            "summary": "Bag API root endpoint",
+            "description": "Welcome message for the Bag API (Requires authentication token in cookies)",
+            "security": [
+                {
+                    "cookieAuth": []
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Bag Root is Successfully Reached",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Bag Root is Successfully Reached"
+                                    },
+                                    "token": {
+                                        "type": "object",
+                                        "properties": {
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "username": {
+                                                "type": "string"
+                                            },
+                                            "_id": {
+                                                "type": "string"
+                                            },
+                                            "admin": {
+                                                "type": "boolean"
+                                            },
+                                            "cart": {
+                                                "type": "array"
+                                            }
+                                        }
+                                    },
+                                    "status": {
+                                        "type": "number",
+                                        "example": 200
+                                    },
+                                    "ok": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+
     "/bags": {
         "get": {
             "tags": [
@@ -19,18 +80,6 @@ module.exports = {
                             "schema": {
                                 "type": "object",
                                 "properties": {
-                                    "message": {
-                                        "type": "string",
-                                        "example": "Bags retrieved successfully"
-                                    },
-                                    "status": {
-                                        "type": "number",
-                                        "example": 200
-                                    },
-                                    "ok": {
-                                        "type": "boolean",
-                                        "example": true
-                                    },
                                     "token": {
                                         "type": "object",
                                         "properties": {
@@ -42,14 +91,29 @@ module.exports = {
                                                 "type": "string",
                                                 "example": "username"
                                             },
-                                            "id": {
+                                            "_id": {
                                                 "type": "string"
                                             },
                                             "admin": {
                                                 "type": "boolean",
                                                 "example": false
+                                            },
+                                            "cart": {
+                                                "type": "array"
                                             }
                                         }
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Bags retrieved successfully"
+                                    },
+                                    "status": {
+                                        "type": "number",
+                                        "example": 200
+                                    },
+                                    "ok": {
+                                        "type": "boolean",
+                                        "example": true
                                     },
                                     "data": {
                                         "type": "array",
@@ -78,6 +142,25 @@ module.exports = {
                                                 "category": {
                                                     "type": "string",
                                                     "example": "leather"
+                                                },
+                                                "quantity": {
+                                                    "type": "number",
+                                                    "example": 10
+                                                },
+                                                "discount": {
+                                                    "type": "number",
+                                                    "example": 10
+                                                },
+                                                "rating": {
+                                                    "type": "number",
+                                                    "example": 4.5
+                                                },
+                                                "image_url": {
+                                                    "type": "string"
+                                                },
+                                                "bestSeller": {
+                                                    "type": "boolean",
+                                                    "example": true
                                                 }
                                             }
                                         }
@@ -190,6 +273,25 @@ module.exports = {
                                             "category": {
                                                 "type": "string",
                                                 "example": "leather"
+                                            },
+                                            "quantity": {
+                                                "type": "number",
+                                                "example": 10
+                                            },
+                                            "discount": {
+                                                "type": "number",
+                                                "example": 10
+                                            },
+                                            "rating": {
+                                                "type": "number",
+                                                "example": 4.5
+                                            },
+                                            "image_url": {
+                                                "type": "string"
+                                            },
+                                            "bestSeller": {
+                                                "type": "boolean",
+                                                "example": true
                                             }
                                         }
                                     }
@@ -208,136 +310,6 @@ module.exports = {
                                     "message": {
                                         "type": "string",
                                         "example": "Bag not found with the provided ID"
-                                    },
-                                    "status": {
-                                        "type": "number",
-                                        "example": 404
-                                    },
-                                    "ok": {
-                                        "type": "boolean",
-                                        "example": false
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "500": {
-                    "description": "Error retrieving bag",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "message": {
-                                        "type": "string",
-                                        "example": "Error retrieving bag"
-                                    },
-                                    "status": {
-                                        "type": "number",
-                                        "example": 500
-                                    },
-                                    "ok": {
-                                        "type": "boolean",
-                                        "example": false
-                                    },
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-
-    "/bags/{name}/{brand}/{model_no}": {
-        "get": {
-            "tags": [
-                "Bags"
-            ],
-            "summary": "Get bag by name, brand and model number",
-            "description": "Retrieve a specific bag by its name, brand, and model number (Requires authentication token in cookies)",
-            "parameters": [
-                {
-                    "name": "name",
-                    "in": "path",
-                    "required": true,
-                    "schema": {
-                        "type": "string"
-                    },
-                    "example": "Classic Leather Bag",
-                    "description": "The name of the bag"
-                },
-                {
-                    "name": "brand",
-                    "in": "path",
-                    "required": true,
-                    "schema": {
-                        "type": "string"
-                    },
-                    "example": "BrandX",
-                    "description": "The brand of the bag"
-                },
-                {
-                    "name": "model_no",
-                    "in": "path",
-                    "required": true,
-                    "schema": {
-                        "type": "string"
-                    },
-                    "example": "CLB-001",
-                    "description": "The model number of the bag"
-                }
-            ],
-            "security": [
-                {
-                    "cookieAuth": []
-                }
-            ],
-            "responses": {
-                "200": {
-                    "description": "Bag retrieved successfully",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "message": {
-                                        "type": "string",
-                                        "example": "Bag retrieved Successfully"
-                                    },
-                                    "status": {
-                                        "type": "number",
-                                        "example": 200
-                                    },
-                                    "ok": {
-                                        "type": "boolean",
-                                        "example": true
-                                    },
-                                    "token": {
-                                        "type": "object"
-                                    },
-                                    "data": {
-                                        "type": "object"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "404": {
-                    "description": "Bag not found with the provided name, brand and model number",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "message": {
-                                        "type": "string",
-                                        "example": "Bag not found with the provided name, brand and model number"
                                     },
                                     "status": {
                                         "type": "number",
@@ -442,7 +414,7 @@ module.exports = {
                     }
                 },
                 "404": {
-                    "description": "Bag not found with the provided name, brand and model number",
+                    "description": "Bag not found with the provided search criteria",
                     "content": {
                         "application/json": {
                             "schema": {
@@ -662,6 +634,295 @@ module.exports = {
                                     },
                                     "detailed_error": {
                                         "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    "/bags/{id}/cart/add": {
+        "put": {
+            "tags": [
+                "Cart"
+            ],
+            "summary": "Add bag to cart",
+            "description": "Add a bag to the user's cart (Requires authentication token in cookies)",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    },
+                    "example": "648878742b18d563a8889b9",
+                    "description": "The ID of the bag to add to cart"
+                },
+                {
+                    "name": "quantity",
+                    "in": "query",
+                    "required": false,
+                    "schema": {
+                        "type": "number"
+                    },
+                    "example": 1,
+                    "description": "Quantity of the bag to add (defaults to 1)"
+                }
+            ],
+            "security": [
+                {
+                    "cookieAuth": []
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Item added to cart",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Item added to cart"
+                                    },
+                                    "ok": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "data": {
+                                        "type": "object",
+                                        "properties": {
+                                            "_id": {
+                                                "type": "string"
+                                            },
+                                            "username": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "admin": {
+                                                "type": "boolean"
+                                            },
+                                            "cart": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "bagId": {
+                                                            "type": "string"
+                                                        },
+                                                        "quantity": {
+                                                            "type": "number"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "400": {
+                    "description": "Quantity exceeds stock",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Quantity exceeds stock"
+                                    },
+                                    "ok": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "Bag or user not found",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Bag not found"
+                                    },
+                                    "ok": {
+                                        "type": "boolean",
+                                        "example": false
+                                    },
+                                    "status": {
+                                        "type": "number",
+                                        "example": 404
+                                    },
+                                    "decoded": {
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "500": {
+                    "description": "Server error",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "error": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Server error"
+                                    },
+                                    "ok": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    "/bags/{id}/cart/delete": {
+        "put": {
+            "tags": [
+                "Cart"
+            ],
+            "summary": "Remove bag from cart",
+            "description": "Remove a bag from the user's cart or reduce its quantity (Requires authentication token in cookies)",
+            "parameters": [
+                {
+                    "name": "id",
+                    "in": "path",
+                    "required": true,
+                    "schema": {
+                        "type": "string"
+                    },
+                    "example": "648878742b18d563a8889b9",
+                    "description": "The ID of the bag to remove from cart"
+                },
+                {
+                    "name": "quantity",
+                    "in": "query",
+                    "required": false,
+                    "schema": {
+                        "type": "number"
+                    },
+                    "example": 1,
+                    "description": "Quantity of the bag to remove (defaults to 1)"
+                }
+            ],
+            "security": [
+                {
+                    "cookieAuth": []
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "Cart updated successfully",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Cart updated successfully"
+                                    },
+                                    "ok": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "data": {
+                                        "type": "object",
+                                        "properties": {
+                                            "_id": {
+                                                "type": "string"
+                                            },
+                                            "username": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "admin": {
+                                                "type": "boolean"
+                                            },
+                                            "cart": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "bagId": {
+                                                            "type": "string"
+                                                        },
+                                                        "quantity": {
+                                                            "type": "number"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "404": {
+                    "description": "User not found or bag doesn't exist in cart",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Bag doesn't exist in cart"
+                                    },
+                                    "ok": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "500": {
+                    "description": "Server error",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "error": {
+                                        "type": "string"
+                                    },
+                                    "ok": {
+                                        "type": "boolean",
+                                        "example": false
                                     }
                                 }
                             }

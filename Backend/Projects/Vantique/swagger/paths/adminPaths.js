@@ -1173,5 +1173,254 @@ module.exports = {
                 }
             }
         }
+    },
+  "/admin/orders/list": {
+    "get": {
+      "tags": ["Admin - Orders"],
+      "summary": "Get all orders",
+      "description": "Retrieve all orders from the database (Admin only)",
+      "security": [
+        {
+          "cookieAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Retrieved all orders",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "number", "example": 200 },
+                  "ok": { "type": "boolean", "example": true },
+                  "message": { "type": "string", "example": "Retrieved all orders" },
+                  "data": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "_id": { "type": "string" },
+                        "userId": { "type": "string" },
+                        "orders": { "type": "array", "items": { "type": "object" } },
+                        "status": { "type": "string", "example": "pending" }
+                      }
+                    }
+                  },
+                  "token": { "type": "object" }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Error occurred",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "number", "example": 500 },
+                  "ok": { "type": "boolean", "example": false },
+                  "message": { "type": "string", "example": "Error occured" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
     }
+  },
+
+  "/admin/orders/list/{id}": {
+    "get": {
+      "tags": ["Admin - Orders"],
+      "summary": "Get orders by user ID",
+      "description": "Retrieve all orders of a specific user (Admin only)",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "string" },
+          "example": "64f1a2b3c4d5e6f7890abc12",
+          "description": "User ID"
+        }
+      ],
+      "security": [
+        {
+          "cookieAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Retrieved user orders",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "number", "example": 200 },
+                  "ok": { "type": "boolean", "example": true },
+                  "message": { "type": "string", "example": "Retrieved all orders" },
+                  "data": {
+                    "type": "array",
+                    "items": { "type": "object" }
+                  },
+                  "token": { "type": "object" }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Invalid user ID",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": { "type": "string", "example": "Invalid user id" },
+                  "ok": { "type": "boolean", "example": false }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Error occurred",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "number", "example": 500 },
+                  "ok": { "type": "boolean", "example": false },
+                  "message": { "type": "string", "example": "Error occured" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "/admin/orders/{id}/status": {
+    "put": {
+      "tags": ["Admin - Orders"],
+      "summary": "Change order status",
+      "description": "Update the status of an order (Admin only)",
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": { "type": "string" },
+          "example": "64f1a2b3c4d5e6f7890abc12",
+          "description": "Order ID"
+        }
+      ],
+      "requestBody": {
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "example": "shipped"
+                }
+              },
+              "required": ["status"]
+            }
+          }
+        }
+      },
+      "security": [
+        {
+          "cookieAuth": []
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Order status updated successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "number", "example": 200 },
+                  "ok": { "type": "boolean", "example": true },
+                  "message": { "type": "string", "example": "Order status updated successfully" },
+                  "data": { "type": "object" }
+                }
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Invalid schema or status",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": { "type": "string", "example": "Invalid schema or status" },
+                  "ok": { "type": "boolean", "example": false }
+                }
+              }
+            }
+          }
+        },
+        "403": {
+          "description": "Unauthorized access",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": { "type": "string", "example": "Admin access required" },
+                  "ok": { "type": "boolean", "example": false }
+                }
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Order not found",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": { "type": "string", "example": "Order not found" },
+                  "ok": { "type": "boolean", "example": false }
+                }
+              }
+            }
+          }
+        },
+        "500": {
+          "description": "Server error",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": { "type": "number", "example": 500 },
+                  "ok": { "type": "boolean", "example": false },
+                  "message": { "type": "string", "example": "Error occured" },
+                  "error": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
