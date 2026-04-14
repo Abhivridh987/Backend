@@ -34,6 +34,32 @@ const swaggerSpec = {
       ...orderSchema
     },
   },
+  tags: [
+    {
+      name: "Orders",
+      description: "Order management endpoints"
+    },
+    {
+      name: "Bag",
+      description: "Bag/Product management"
+    },
+    {
+      name: "Auth",
+      description: "Authentication endpoints"
+    },
+    {
+      name: "Admin",
+      description: "Admin root endpoint"
+    },
+    {
+      name: "Admin - Users",
+      description: "Admin user management"
+    },
+    {
+      name: "Admin - Orders",
+      description: "Admin order management"
+    }
+  ],
 };
 
 module.exports = swaggerSpec;

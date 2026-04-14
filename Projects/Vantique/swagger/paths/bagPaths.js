@@ -1,5 +1,5 @@
 module.exports = {
-    "/": {
+    "home/": {
         "get": {
             "tags": [
                 "Bags"
@@ -60,7 +60,7 @@ module.exports = {
         }
     },
 
-    "/bags": {
+    "home/bags": {
         "get": {
             "tags": [
                 "Bags"
@@ -201,7 +201,7 @@ module.exports = {
         }
     },
 
-    "/bags/{id}": {
+    "home/bags/{id}": {
         "get": {
             "tags": [
                 "Bags"
@@ -355,7 +355,7 @@ module.exports = {
         }
     },
 
-    "/bags/search": {
+    "home/bags/search": {
         "get": {
             "tags": [
                 "Bags"
@@ -468,7 +468,7 @@ module.exports = {
         }
     },
 
-    "/bags/search/filter": {
+    "home/bags/search/filter": {
         "get": {
             "tags": [
                 "Bags"
@@ -644,7 +644,7 @@ module.exports = {
         }
     },
 
-    "/bags/{id}/cart/add": {
+    "home/bags/{id}/cart/add": {
         "put": {
             "tags": [
                 "Cart"
@@ -804,7 +804,7 @@ module.exports = {
         }
     },
 
-    "/bags/{id}/cart/delete": {
+    "home/bags/{id}/cart/delete": {
         "put": {
             "tags": [
                 "Cart"
