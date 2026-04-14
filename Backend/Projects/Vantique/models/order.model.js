@@ -18,7 +18,13 @@ const OrderSchema = mongoose.Schema({
                 required:true
             }
         }
-    ]
+    ],
+    status:{
+        type:String,
+        default:"ORDER_PLACED"
+    }
+}, {
+    timestamps:true
 })
 
 const Order = mongoose.model("Order", OrderSchema, "Order")
