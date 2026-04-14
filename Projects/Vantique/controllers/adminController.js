@@ -441,7 +441,7 @@ const changeOrderStatus = async (req,res)=>{
         return res.status(200).json({
             status:200,
             ok:true,
-            message:"Retrieved all orders",
+            message:"Order Updated",
             data:order,
             token:decoded
         })

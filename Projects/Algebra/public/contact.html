@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Smooch+Sans:wght@100..900&display=swap');
+
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            font-family: "Montserrat", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 25px;
+            background: linear-gradient(to top left,rgba(25, 25, 112, 0.405),rgba(0, 0, 128, 0.751));
+        }
+        .container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+        .contact-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 40px;
+            background: linear-gradient(to top left,rgba(0, 255, 255, 0.521),rgba(127, 255, 212, 0.318),rgba(255, 255, 255, 0.608));
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 2px 4px 15px rgba(255, 255, 255, 0.642);
+            max-width: 900px;
+            
+            
+        }
+
+        .image-section img {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .details-section {
+            flex: 1;
+            color: white;
+        }
+
+        .details-section h2 {
+            color: navy;
+            margin-bottom: 10px;
+        }
+
+        .details-section p {
+            margin: 8px 0;
+            font-size: 16px;
+            color: aliceblue;
+        }
+
+        .details-section a {
+            color: navy;
+            text-decoration: none;
+        }
+
+        .details-section a:hover {
+            text-decoration: underline;
+        }
+        dl{
+            font-size: 16px;
+        }
+        dt{
+            margin-left: 20px;
+            
+        }
+        dd{
+            margin-left: 40px;
+            
+        }
+        b,strong{
+            color:navy;
+        }
+        @media(max-width:700px){
+            .container{
+                height: fit-content;
+            }
+            .contact-container{
+                flex-direction: column;
+            }
+            .image-section img{
+                height: 200px;
+                width: 200px;
+            }
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/0e66e07bd2.js" crossorigin="anonymous"></script>
+    <style>
+        .fa-brands{
+            color:navy;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="contact-container">
+            <div class="image-section">
+                <img src="/891fcef1-80de-497e-80f6-a2973c222b99.jpg" alt="Developer Photo">
+            </div>
+            <div class="details-section">
+                <h2>Abhivridh</h2>
+                <p>Second Year Engineering Student</p>
+                <p>Studying in CET,Trivandum</p>
+                <p><strong>Projects</strong>
+                    <dl>
+                        <dt><b>Project - Algebra</b></dt>
+                        <dd>A user login-based and user authentication based scientific calculator that saves each user's calculation history using Node.js and JSON.</dd>
+                        <dt><b>Project - Diabetes</b></dt>
+                        <dd>A AI diabetes prediction web app that uses Support Vector Machine Model to predict diabetes and integrated as a API using Python Flask</dd>
+                        <dt><b>Monsoon Diaries</b></dt>
+                        <dd>A frontend based travel website that helps tourists to explore Keralian Culture and gives the top spots in Kerala</dd>
+                        <dt><b>Currency Convertor</b></dt>
+                        <dd>A user login based web app that helps users to convert currencies of one country to another , which can also be filtered at different dates</dd>
+                    </dl>
+                </p>
+                <p><strong>Role:</strong> Full Stack Developer, AI/ML Engineer</p>
+                <p><strong>Tech Stack:</strong> HTML&nbsp;<i class="fa-brands fa-html5 fa-sm" style="color:navy"></i>, CSS&nbsp;<i class="fa-brands fa-css fa-sm" style="color:navy"></i>, JavaScript&nbsp;<i class="fa-brands fa-js fa-sm"></i>, Node.js&nbsp;<i class="fa-brands fa-node-js fa-sm"></i>, Express, JSON,Python ML Libraries&nbsp;<i class="fa-brands fa-python fa-sm"></i>,Flask</p>
+                <p><strong><i class="fa-solid fa-envelope"></i></strong>&nbsp;&nbsp; <a href="mailto:abhivridh2@gmail.com">abhivridh2@gmail.com</a></p>
+                <p><strong><i class="fa-brands fa-square-github"></i></strong>&nbsp;&nbsp; <a href="https://github.com/Abhivridh987" target="_blank">https://github.com/Abhivridh987</a></p>
+                <p><strong><i class="fa-brands fa-linkedin"></i></strong>&nbsp;&nbsp; <a href="https://www.linkedin.com/in/abhivridh-03467733b" target="_blank">www.linkedin.com/in/abhivridh-03467733b</a></p>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

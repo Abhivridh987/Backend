@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Smooch+Sans:wght@100..900&display=swap');
+
+        *{
+            margin: 0;
+            padding:0;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background:url(/68275856f8f042c7d3d6e0a9_largeheader_whitebranding.png);
+            background-size: cover;
+            background-position: 100% 0%;
+            height: 100vh;
+            width:100vw;
+            overflow: hidden;
+        }
+        .container{
+            height: 100vh;
+            width: 100vw;
+            background: rgba(0, 0, 0, 0);
+            border: 1px solid black;
+            
+
+            
+        }
+        .loginbox1{
+            width: 40%;
+            height: 80%;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform:translate(-10%,-50%);
+            background: linear-gradient(to top left,rgba(25, 25, 112, 0.312),rgba(0, 255, 255, 0.433),rgba(127, 255, 212, 0.522),rgba(173, 216, 230, 0.327));
+            color: navy;
+            border-radius: 10px;
+            box-shadow: 2px 2px 50px rgba(0, 0, 0, 0.144);
+        }
+        .login-box{
+        width: 40%;
+        height: 80%;
+        background:transparent;
+        font-family: "Montserrat", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        border-radius: 20px;
+        position: absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-10%,-50%);
+        color: navy;
+        
+
+        }
+        .heading{
+            color: navy;
+            font-family: "Smooch Sans", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 800;
+            font-style: normal;
+            font-size: 120px;
+            text-align: left;
+            padding: 20px;
+
+        }
+        .heading2{
+            color: navy;
+            font-family: "Smooch Sans", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 800;
+            font-style: normal;
+            font-size: 250px;
+            text-align: left;
+            padding: 20px;
+
+        }
+        form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: max-content;
+        gap:10px;
+        height: 50%;
+        }
+        .textbox{
+
+        width: 80%;
+        height: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        }
+        .usericon{
+        height: 30%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: navy;
+        gap:10px;
+        font-size: 20px;
+        }
+        .fa-solid{
+        font-size: 4rem;
+        color: navy;
+        ;
+        }
+        .textbox input{
+        width: 90%;
+        height: 50%;
+        font-family: "Montserrat", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        border: none;
+        font-size: 20px;
+        border-radius: 15px;
+        padding: 5px;
+
+        }
+        .btn{
+        width: 20%;
+        font-family: "Montserrat", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        padding:10px;
+        border: none;
+        background: white;
+
+        }
+        .btn:hover{
+        background:linear-gradient(to top left, red,orange);
+        color: aliceblue;
+        border-radius: 10px;
+        box-shadow: 1px 1px 20px white;
+        transform: scale(1.1);
+        transition-duration: 0.3s;
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/0e66e07bd2.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="heading">Project -</div>
+        <div class="heading2">Algebra</div>
+        <div class="loginbox1">
+
+        </div>
+        <div class="login-box">
+            <div class="usericon"><div><i class="fa-solid fa-circle-user"></i></div><div>Sign Up Form</div></div>
+            <form id="form">
+                <div class="textbox">
+                    <input type="text" placeholder="Username" name="username" required>
+                </div>
+                <div class="textbox">
+                    <input type="email" placeholder="Enter Your Email" name="email" required>
+                </div>
+                <div class="textbox">
+                    <input type="password" placeholder="Password" name="password" required>
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        const form = document.querySelector('#form');
+        form.addEventListener('submit',async (e)=>{
+            e.preventDefault()
+            const formdata = new FormData(form);
+            const data = Object.fromEntries(formdata.entries())
+            const response = await fetch('/signup',{
+                method:'PUT',
+                headers : {'Content-Type':'application/json'},
+                body:JSON.stringify(data)
+            })
+            console.log(response)
+            if(response.ok){
+                const result = await response.json()
+                console.log(result);
+                if(result["success"]){
+                    console.log('Login Successful')
+                    console.log('Login Successful ')
+                    window.location.href='/signup/success'
+                }
+                else{
+                    console.log(result['error'])
+                    window.location.href='/signup/error'
+                }
+            }
+            else{
+                console.log('Server Error')
+            }
+        })
+    </script>
+</body>
+</html>

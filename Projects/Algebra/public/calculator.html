@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/calculator.css" type="text/css">
+    <script src="https://kit.fontawesome.com/0e66e07bd2.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-bar">
+            <div class="logo">
+                Project - Algebra
+            </div>
+            <div class="nav-options">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+            
+        </div>
+        <div class="content">
+            <div class="side-pane">
+                <div class="user">
+                    <div class="user-pic">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">
+                            Username
+                        </div>
+                        <div class="user-id">
+                            UserID
+                        </div>
+                        <div class="profile-edit">
+                            <a href="#" id="user-name-edit">Edit Your Name</a>
+                        </div>
+                        <div class="new-username-edit">
+                            <div class="box-message"><div class="title">Edit Username</div><div class="cancel"><i class="fa-solid fa-circle-xmark" id="user-name-cancel"></i></div></div>
+                            <div class="new_user_name"><input type="text" placeholder="Enter New Username" id="new-username-edit-textbox"></div>
+                            <div class="user-name-submit"><button id="user-name-submit">Edit</button></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="options">
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/contact">Contact&nbsp;</a></li>
+                        <li class="logouttab"><a href="/calculator/user/logout" style="text-decoration: none; color: red;">Logout &nbsp;<i class="fa-solid fa-right-from-bracket" style="font-size: 20px; margin:0; color:red; height: 20px; width: 20px;"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="history">
+                <div class="header">
+                <div class="title">History</div>
+                <div class="filter">
+                    <select name="date-filter" id="date-filter">
+                        <option selected>Today</option>
+                        <option>Yesterday</option>
+                        <option>This Week</option>
+                        <option>This Month</option>
+                        <option>Other Date<input type="date" id="history_date"></option>
+                    </select>
+                </div>
+                </div>
+                <div class="history-panel">
+
+                </div>
+            </div>
+            <div class="calculator">
+                <div class="calculator-container">
+                    <div class="screen">
+                        <div class="answer"></div>
+                        <div class="question"></div>
+                    </div>
+                    <div class="buttons">
+                        
+                            <div>AC</div>
+                            <div>sin</div>
+                            <div>cos</div>
+                            <div>tan</div>
+                            <div>%</div>
+
+                            <div>ln</div>
+                            <div>√x</div>
+                            <div>(</div>
+                            <div>)</div>
+                            <div>/</div>
+
+                            <div>log</div>
+                            <div>7</div>
+                            <div>8</div>
+                            <div>9</div>
+                            <div>*</div>
+
+                            <div>x^y</div>
+                            <div>4</div>
+                            <div>5</div>
+                            <div>6</div>
+                            <div>-</div>
+
+                            <div>π</div>
+                            <div>1</div>
+                            <div>2</div>
+                            <div>3</div>
+                            <div>+</div>
+
+                            <div>e</div>
+                            <div>φ</div>
+                            <div>0</div>
+                            <div>.</div>
+                            <div>=</div>
+                            
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+
+        </div>
+    </div>
+    <script>
+
+        
+        //Local Storage Session User ID Check - Vulnerable to XSS Attacks
+        // const ID = localStorage.getItem('userID');
+        // console.log('User ID:', ID);
+        // if(!ID){
+        //     // Redirect to login page if ID is not found
+        //     window.location.href = '/';
+        // }
+
+        // Local Storage Session User ID Check - Using Express Session
+        // Assuming you have a session management in place
+        let current_history_data=''
+        function display_history(history_data){
+            document.querySelector('.history-panel').innerHTML = ''; // Clear previous history
+            let item = document.createElement('div');
+            item.classList.add('history-item');
+            item.innerHTML = `<h2>${history_data.date}</h2>`;
+            for(let i = history_data.operations.length - 1; i >= 0; i--){
+                let op_item = document.createElement('div');
+                op_item.classList.add('operation-item');
+                op_item.innerHTML = `<p>${history_data.operations[i]}</p>`;
+                item.append(op_item);
+            }
+            document.querySelector('.history-panel').appendChild(item);
+        }
+
+        function update_current_history(expression,result){
+            const eqn = `${expression} = ${result}`;
+            current_history_data.operations.push(eqn);
+            display_history(current_history_data);
+
+            async function file_put(eqn){
+                const data = {
+                    "new_op":eqn
+                }
+                const response = await fetch('/calculator/user/history/put',{
+                    method:'PUT',
+                    headers:{'Content-Type' : 'application/json'},
+                    body:JSON.stringify(data)
+                });
+                if(response.ok){
+                    const result = await response.json()
+                    if(result['success']){
+                        console.log('Everything related to Updation Successful')
+                    }
+                    else{
+                        console.log('Error in copying data to json file')
+                    }
+                }
+                else{
+                    console.log('Server Error');
+                }
+            }
+            file_put(eqn)
+
+            
+        }
+        
+        function display_multiple_history(history_data){
+            document.querySelector('.history-panel').innerHTML = ''; // Clear previous history
+            for(let i = 0; i < history_data.length; i++){
+                let item = document.createElement('div');
+                item.classList.add('history-item');
+                item.innerHTML = `<h2>${history_data[i].date}</h2>`;
+                for(let j = history_data[i].operations.length - 1; j >= 0; j--){
+                    let op_item = document.createElement('div');
+                    op_item.classList.add('operation-item');
+                    op_item.innerHTML = `<p>${history_data[i].operations[j]}</p>`;
+                    item.append(op_item);
+                }
+                document.querySelector('.history-panel').appendChild(item);
+            }
+            let space = document.createElement('div');
+            space.style.padding = "15px";
+            document.querySelector('.history-panel').appendChild(space);
+        }
+        async function checkUserSession () {
+            const user = await fetch('/calculator/user/api');
+            try{
+                if(!user.ok){
+                    console.log('user not found or expired');
+                }
+                else{
+                    const details = await user.json();
+                    const today_history = await fetch(`/calculator/user/history/filter/?filter=Today`);
+                    if(today_history.ok){
+                        current_history_data = await today_history.json();
+                        console.log('Today\'s History:', current_history_data);
+                        display_history(current_history_data);
+                    }
+                    else{
+                        console.log('No history found for today');
+                    }
+                    console.log(details);
+                }
+            }
+            catch(err){
+                console.error('Error fetching user session Server Error:', err);
+            }
+        }
+        checkUserSession();
+
+        async function getUserDetails(){
+            const response = await fetch('/user/details');
+            if(response.ok){
+                const data = await response.json()
+                const {username,userid} = data;
+                document.querySelector('.user-name').innerText = username;
+                document.querySelector('.user-id').innerText = `User ID : ${userid}`;
+            }
+            else{
+                console.log('Server Error in fetching Details')
+            }
+        }
+        getUserDetails();
+
+        // Other date UI/UX Functionality
+        other_date = document.querySelector('#date-filter').value;
+        document.querySelector('#date-filter').addEventListener('change', async function() {
+            if(document.querySelector('#date-filter').value == 'Other Date')
+                document.querySelector('#history_date').style.display = 'block';
+            else
+                document.querySelector('#history_date').style.display = 'none';
+            const filter = this.value;
+            console.log('Selected filter:', filter);
+            // Here you can implement the logic to filter the history based on the selected date
+            try {
+                const history = await fetch(`/calculator/user/history/filter/?filter=${filter}`);
+                if(history.ok){
+                    const history_data = await history.json();
+                    console.log(history_data);
+                    if(filter == 'Today'){
+                        display_history(current_history_data);
+                    }
+                    else if(filter == 'Yesterday'){
+                        display_history(history_data);
+                    }
+                    else if(filter == 'This Week'){
+                        display_multiple_history(history_data);
+                    }
+                    else if(filter == 'This Month'){
+                        display_multiple_history(history_data);
+                    }
+                }
+                else{
+                    console.log('No history found for the selected date');
+                }
+            }
+            catch(err){
+                console.error('Error fetching history Server Error:', err);
+            }
+        });
+
+        document.querySelector('#user-name-edit').addEventListener('click',()=>{
+            document.querySelector('.new-username-edit').style.display = 'flex';
+        })
+        document.querySelector('#user-name-cancel').addEventListener('click',()=>{
+            document.querySelector('.new-username-edit').style.display = 'none';
+        })
+        document.querySelector('#user-name-submit').addEventListener('click',async function(){
+            const name = document.querySelector('#new-username-edit-textbox').value;
+            console.log(name);
+            const data = {
+                new_name:name
+            }
+            let response = await fetch('/calculator/user/changeusername',{
+                method:'PUT',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify(data)
+            });
+            if(response.ok){
+                console.log(response);
+                document.querySelector('.new-username-edit').style.display = 'none';
+                getUserDetails()
+
+            }
+            else{
+                console.log(response)
+            }
+
+
+        })
+
+        document.querySelector('#history_date').addEventListener('change',async function(){
+            const filter_date = this.value;
+            console.log(filter_date)
+            const new_filter_date = filter_date.split('-').reverse().join('-')
+            console.log(new_filter_date)
+            let response = await fetch(`/calculator/user/history/filter?date=${new_filter_date}`);
+            if(response.ok){
+                const result = await response.json();
+                console.log(result)
+                display_history(result[0])
+            }
+            else{
+                console.log('No date required');
+            }
+        })
+        
+        // Button Clicking and Displaying Functionality
+        btn = document.querySelector('.buttons').children
+        let expression = ''
+        for(i = 0; i<btn.length;i++){
+            btn[i].addEventListener('click',function(){
+                if(this.innerText == '='){
+                    let answer = evaluate(expression);
+                    if(isNaN(answer) || answer == Infinity || answer == -Infinity){
+                        document.querySelector('.answer').innerText = 'Invalid Expression';
+                    }
+                    else{
+                        document.querySelector('.answer').innerText = answer;
+                        update_current_history(document.querySelector('.question').innerText,answer);
+                    }
+                }
+                else if(this.innerText == 'AC'){
+                    document.querySelector('.question').innerText=''
+                    document.querySelector('.answer').innerText = '';
+                    expression = ''
+                }
+                else if(this.innerText == 'x^y'){
+                    document.querySelector('.question').innerText +='^';
+                    expression+='^'
+                }
+                else if(this.innerText == '√x'){
+                    document.querySelector('.question').innerText += '√';
+                    expression+='√'
+                }
+                else{
+                    document.querySelector('.question').innerText+=this.innerText;
+                    if(this.innerText == 'sin')
+                        expression+='s'
+                    else if(this.innerText == 'cos')
+                        expression+='c'
+                    else if(this.innerText == 'tan')
+                        expression+='t'
+                    else if(this.innerText == 'log')
+                        expression+='l'
+                    else if(this.innerText == 'ln')
+                        expression+='n'
+                    else if(this.innerText == 'π')
+                        expression+='3.141592653589793'
+                    else if(this.innerText == 'e')
+                        expression+='2.718281828459045'
+                    else if(this.innerText == 'φ')
+                        expression+='1.618033988749895'
+                    else
+                        expression+=this.innerText;
+                }
+            })
+        }
+
+            // evaluate Function
+            function roundTo(num){
+                return Math.round(num * 10000)/10000;
+            }
+            function preference(ch){
+                if(ch == '+' || ch == '-'){
+                    return 1;
+                }
+                else if(ch == '*' || ch == '/' || ch == '%'){
+                    return 2;
+                }
+                else if(ch == 's' || ch == 'c' || ch =='t' || ch == 'l' || ch == 'n' || ch == '√'){
+                    return 3;
+                }
+            }
+
+            function binary_calc(a,b,op){
+                if(op == '+')
+                    return a+b;
+                else if(op == '-')
+                    return a-b;
+                else if(op == '*')
+                    return a*b;
+                else if(op == '/')
+                    return a/b;
+                else if(op == '^')
+                    return Math.pow(a,b);
+                else if(op == '%')
+                    return a%b;
+            }
+            function unary_calc(a,op){
+                if(op == 's')
+                    return roundTo(Math.sin(a));
+                else if(op == 'c')
+                    return roundTo(Math.cos(a));
+                else if(op == 't')
+                    return roundTo(Math.tan(a));
+                else if(op == 'l')
+                    return roundTo(Math.log10(a));
+                else if(op == 'n')
+                    return roundTo(Math.log(a));
+                else if(op == '√')
+                    return roundTo(Math.sqrt(a));
+            }
+
+            function evaluate(question){
+                unary_ops = ['s', 'c', 't', 'l', 'n', '√'];
+                binary_ops = ['+', '-', '*', '/', '%', '^'];
+                if(question == ''){
+                    return ''
+                }
+                let op_st= []
+                let num_st = []
+                num = ''
+                for (let i of question) {
+                    if(!isNaN(i) || i == '.'){
+                        num+=i;
+                    }
+                    else{
+                        if(num != ''){
+                            num = Number(num);
+                            num_st.push(num);
+                            num = '';
+                        }
+                        
+                        if(i == '('){
+                            op_st.push(i);
+                        }
+                        else if(i == ')'){
+                            while(op_st.length > 0 && op_st[op_st.length-1] != '('){
+                                ch = op_st.pop();   
+                                if(unary_ops.includes(ch)){
+                                    a = num_st.pop()
+                                    mini_result = unary_calc(a,ch);
+                                }
+                                else{
+                                    a = num_st.pop()
+                                    b = num_st.pop();
+                                    mini_result = binary_calc(b,a,ch);
+                                }
+                                num_st.push(mini_result);
+                            }
+                            op_st.pop(); // pop the '('
+                        }
+                        else if(op_st.length == 0 || preference(i) > preference(op_st[op_st.length - 1])){
+                            op_st.push(i);
+                        }   
+                        else if(preference(i) <= preference(op_st[op_st.length-1]) || op_st.length == 0){
+                            while(op_st.length > 0 && preference(i) <= preference(op_st[op_st.length-1])){
+                                ch = op_st.pop();
+                                if(unary_ops.includes(ch)){
+                                    a = num_st.pop()
+                                    mini_result = unary_calc(a,ch);
+                                }
+                                else{
+                                    a = num_st.pop()
+                                    b = num_st.pop();
+                                    mini_result = binary_calc(b,a,ch);
+                                }
+                                num_st.push(mini_result);
+                            }
+                            op_st.push(i);
+                        }
+                        else{
+                            op_st.push(i);
+
+                        }
+
+                    }
+                }
+                if(num != ''){
+                    num = Number(num);
+                    num_st.push(num);
+                }
+                while(op_st.length > 0){
+                    ch = op_st.pop();
+                    if(unary_ops.includes(ch)){
+                        a = num_st.pop()
+                        console.log(a,ch);
+                        mini_result = unary_calc(a,ch);
+                        console.log(mini_result);
+                    }
+                    else{
+                        a = num_st.pop()
+                        b = num_st.pop();
+                        mini_result = binary_calc(b,a,ch);
+                    }
+                    num_st.push(mini_result);
+                    console.log(num_st);
+                }
+                return num_st[0];
+            }
+    </script>
+</body>
+</html>
